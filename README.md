@@ -13,12 +13,15 @@ Página HTML:
 La imagen ya viene con un servidor web y un contenido customizable.
  
 Requisitos de Chart de Helm:
+
 Valores Configurables:
+
+```
 Nombre de la aplicación.
 Puerto donde escucha la aplicación.
 Mensaje (mirar documentación de la imagen hello-k8s).
 Posibilidad de cambiar el número de replicas.
- 
+```
 Una vez desplegada la primera aplicación, desplegar 2 más con el mismo Chart solo cambiando el nombre, el mensaje y el puerto de la aplicación.
  
 TIPS:
