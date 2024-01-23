@@ -90,6 +90,60 @@ helm install webapp2 . --dry-run --set PORT=8083 --set MESSAGE="Deploy WebApp3" 
 ## Comprobaciones
 Una vez que tenemos el dry run, hay que hacer los despliegues para ver que conviven todos en el mismo Namespace y que funcionan todos según el puerto y el servicio. Para ello los desplegamos con los comandos anteriores pero sin el dry-run.
 
+```
+helm install webapp1 . -n hacktone2-helm
+```
+Se despliega el primero, sin argumentos para pillar los valores por defecto:
+
+```
+ kubectl get pods,svc,deploy,ingress -o wide -n hacktone2-helm
+```
+
+![image](https://github.com/robbyq92/hacktone2_chart/assets/49034238/dc996781-469e-418d-aa81-af04d1fcedaa)
+
+Probamos ahora con el forward que llegamos al puerto del servicio:
+```
+kubectl -n hacktone2-helm port-forward service/webapp1-k8 31565:80
+```
+Se ve que llegamos y nos da también el nombre del primer pod:
+
+![image](https://github.com/robbyq92/hacktone2_chart/assets/49034238/a23aff05-3a4c-4320-80ce-8e0e41d92584)
+
+
+Desplegamos el segundo deploy:
+```
+helm install webapp2 .  --set PORT=8082 --set MESSAGE=webapp2 --set REPLICAS=3 --set NOMBRE_APP=webapp2 -n hacktone2-helm
+```
+
+Comprobamos el despliegue y el forward:
+```
+kubectl get pods,svc,deploy  -n hacktone2-helm
+
+kubectl -n hacktone2-helm port-forward service/webapp2-k8 30310:80
+```
+
+![image](https://github.com/robbyq92/hacktone2_chart/assets/49034238/66ec7a67-7993-48dc-87b0-ed4160363508)
+
+
+![image](https://github.com/robbyq92/hacktone2_chart/assets/49034238/c4709c90-bc12-489f-97a3-1c77dba5fad3)
+
+El 3 Deployment con un nombre de webapp3, igual:
+```
+helm install webapp3 .  --set PORT=8083 --set MESSAGE=webapp3 --set REPLICAS=2 --set NOMBRE_APP=webapp3 -n hacktone2-helm
+kubectl get pods,svc,deploy  -n hacktone2-helm
+```
+![image](https://github.com/robbyq92/hacktone2_chart/assets/49034238/7495fc71-4103-4b84-afa4-e7791c1d219f)
+
+
+Le hacemos un port-forward para comprobar 
+```
+kubectl -n hacktone2-helm port-forward service/webapp3-k8 30717:80
+```
+
+![image](https://github.com/robbyq92/hacktone2_chart/assets/49034238/0c4c6987-7024-4aa9-b7da-fa9d343eb7f7)
+
+
+
 
 
 
